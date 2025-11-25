@@ -2,27 +2,21 @@
 
 TaskFlow es una API REST para la gestión eficiente de tareas, con soporte para autenticación segura mediante JWT, etiquetas, prioridades y arquitectura moderna basada en FastAPI y SQLAlchemy asíncrono.
 
----
-
 ## 🚀 Características Principales
 
-- **FastAPI:** Framework moderno y ultra rápido para APIs.
-- **SQLAlchemy 2.x async:** ORM asíncrono para mejor rendimiento.
-- **PostgreSQL:** Base de datos relacional robusta.
-- **Alembic:** Migraciones automáticas de base de datos.
-- **JWT Authentication:** Seguridad con tokens.
-- **Docker & Docker Compose:** Fácil despliegue containerizado.
-- **Arquitectura limpia:** Separación clara en capas (API, servicios, repositorios, modelos).
-
----
+- **FastAPI**: Framework moderno y ultra rápido para APIs.
+- **SQLAlchemy 2.x async**: ORM asíncrono para mejor rendimiento.
+- **PostgreSQL**: Base de datos relacional robusta.
+- **Alembic**: Migraciones automáticas de base de datos.
+- **JWT Authentication**: Seguridad con tokens.
+- **Docker & Docker Compose**: Fácil despliegue containerizado.
+- **Arquitectura limpia**: Separación clara en capas (API, servicios, repositorios, modelos).
 
 ## 📦 Requisitos Previos
 
 - Docker y Docker Compose (recomendado)  
-  **O bien**  
+  **o**  
 - Python 3.11+ y PostgreSQL 15+ instalados localmente
-
----
 
 ## ⚙️ Instalación y Configuración
 
@@ -77,12 +71,13 @@ Crear base de datos taskflow_db
 
 Crear usuario taskflow_user con contraseña taskflow_password
 
-🛠 Configuración del entorno
-Para correr el proyecto, copia el archivo .env.example y renómbralo a .env, luego edita las variables con los valores correspondientes:
+Configurar variables de entorno copiando el archivo .env.example y renombrándolo a .env:
 
 bash
 Copiar código
 cp .env.example .env
+Editar el archivo .env con los valores correspondientes.
+
 Crear y aplicar migraciones:
 
 bash
