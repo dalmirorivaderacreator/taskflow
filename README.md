@@ -1,265 +1,259 @@
 # TaskFlow API
 
-[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.95.2-green)](https://fastapi.tiangolo.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Docker](https://img.shields.io/badge/docker-yes-blue)](https://www.docker.com/)
-
-TaskFlow es una API REST para la gestión eficiente de tareas, con soporte para autenticación segura mediante JWT, etiquetas, prioridades y arquitectura moderna basada en FastAPI y SQLAlchemy asíncrono.
+**TaskFlow** es una API REST moderna para la gestión eficiente de tareas, con soporte para autenticación segura mediante JWT, etiquetas, prioridades y una arquitectura limpia basada en FastAPI y SQLAlchemy asíncrono.
 
 ---
 
-## 🚀 Características Principales
+## 🚀 Características principales
 
-- **FastAPI:** Framework moderno y ultra rápido para APIs.
-- **SQLAlchemy 2.x async:** ORM asíncrono para mejor rendimiento.
-- **PostgreSQL:** Base de datos relacional robusta.
-- **Alembic:** Migraciones automáticas de base de datos.
-- **JWT Authentication:** Seguridad con tokens.
-- **Docker & Docker Compose:** Fácil despliegue containerizado.
-- **Arquitectura limpia:** Separación clara en capas (API, servicios, repositorios, modelos).
-
----
-
-## 📦 Requisitos Previos
-
-- Docker y Docker Compose (recomendado),  
-  **o bien**  
-- Python 3.11+ y PostgreSQL 15+ instalados localmente.
+* **FastAPI**: Framework rápido y moderno para APIs.
+* **SQLAlchemy 2.x async**: ORM asíncrono para mejor rendimiento.
+* **PostgreSQL**: Base de datos relacional robusta y escalable.
+* **Alembic**: Migraciones automáticas de base de datos.
+* **JWT Authentication**: Seguridad basada en tokens con expiración configurable.
+* **Docker & Docker Compose**: Despliegue containerizado fácil y reproducible.
+* **Arquitectura limpia**: Separación clara en capas (API, servicios, repositorios, modelos).
+* **Seguridad**: Hashing de contraseñas con Argon2.
 
 ---
 
-⚙️ Instalación y Configuración
-Opción 1: Usando Docker (Recomendado)
+## 📦 Requisitos previos
 
-Clonar el repositorio y entrar al directorio:
+* **Opción recomendada:** Docker y Docker Compose instalados.
+* **Alternativa:** Python 3.11+ y PostgreSQL 15+ instalados localmente.
 
+---
+
+## ⚙️ Instalación y configuración
+
+### Opción 1: Usando Docker (Recomendado)
+
+```bash
+# Clonar repositorio
 git clone https://github.com/tu_usuario/taskflow.git
 cd taskflow
 
-
-Levantar servicios con Docker Compose:
-
+# Levantar servicios en segundo plano
 docker-compose up -d
 
-
-Crear y aplicar migraciones:
-
+# Crear y aplicar migraciones
 docker-compose exec api alembic revision --autogenerate -m "Initial migration"
 docker-compose exec api alembic upgrade head
+```
 
+* Accede a la documentación interactiva en:
 
-Acceder a la API en:
+  * Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
+  * ReDoc: [http://localhost:8000/redoc](http://localhost:8000/redoc)
 
-Swagger UI: http://localhost:8000/docs
+---
 
-ReDoc: http://localhost:8000/redoc
+### Opción 2: Desarrollo local (sin Docker)
 
-Opción 2: Desarrollo Local (sin Docker)
-
-Crear y activar un entorno virtual:
-
+```bash
+# Crear y activar entorno virtual
 python -m venv venv
 
-
-En Windows (PowerShell):
-
+# Windows (PowerShell)
 venv\Scripts\activate
 
-
-En Linux/macOS (bash):
-
+# Linux/macOS (bash)
 source venv/bin/activate
 
-
-Instalar dependencias:
-
+# Instalar dependencias
 pip install -r requirements.txt
+```
 
+* Configura PostgreSQL creando base de datos y usuario:
 
-Configurar PostgreSQL:
+```sql
+CREATE DATABASE taskflow_db;
+CREATE USER taskflow_user WITH PASSWORD 'taskflow_password';
+GRANT ALL PRIVILEGES ON DATABASE taskflow_db TO taskflow_user;
+```
 
-Crear base de datos taskflow_db
+* Copia y edita variables de entorno:
 
-Crear usuario taskflow_user con contraseña taskflow_password
-
-Configurar variables de entorno copiando el archivo .env.example y renombrándolo a .env:
-
+```bash
 cp .env.example .env
+# Edita .env con tus valores
+```
 
+* Ejecuta migraciones:
 
-Editar el archivo .env con los valores correspondientes.
-
-Crear y aplicar migraciones:
-
+```bash
 alembic revision --autogenerate -m "Initial migration"
 alembic upgrade head
+```
 
+* Ejecuta la aplicación:
 
-Ejecutar la aplicación:
-
+```bash
 uvicorn app.main:app --reload
+```
 
-🌐 Uso de la API
+---
 
-Registrar un usuario:
+## 🌐 Uso básico de la API
 
+### Registrar usuario
+
+```bash
 curl -X POST "http://localhost:8000/api/v1/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "usuario@example.com",
-    "username": "usuario",
-    "password": "password123",
-    "full_name": "Usuario Ejemplo"
-  }'
+-H "Content-Type: application/json" \
+-d '{ "email": "usuario@example.com", "username": "usuario", "password": "password123", "full_name": "Usuario Ejemplo" }'
+```
 
+### Iniciar sesión
 
-Iniciar sesión:
-
+```bash
 curl -X POST "http://localhost:8000/api/v1/auth/login" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=usuario&password=password123"
+-H "Content-Type: application/x-www-form-urlencoded" \
+-d "username=usuario&password=password123"
+```
 
+Respuesta esperada:
 
-Respuesta:
-
+```json
 {
   "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
   "token_type": "bearer"
 }
+```
 
+### Crear tarea (requiere token)
 
-Crear una tarea (requiere autenticación):
-
+```bash
 curl -X POST "http://localhost:8000/api/v1/tasks/" \
-  -H "Authorization: Bearer TU_TOKEN_AQUI" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Mi primera tarea",
-    "description": "Descripción de la tarea",
-    "priority": 1,
-    "tag_ids": []
-  }'
+-H "Authorization: Bearer TU_TOKEN_AQUI" \
+-H "Content-Type: application/json" \
+-d '{ "title": "Mi primera tarea", "description": "Descripción de la tarea", "priority": 1, "tag_ids": [] }'
+```
 
+### Listar tareas (requiere token)
 
-Obtener todas las tareas (requiere autenticación):
-
+```bash
 curl -X GET "http://localhost:8000/api/v1/tasks/" \
-  -H "Authorization: Bearer TU_TOKEN_AQUI"
+-H "Authorization: Bearer TU_TOKEN_AQUI"
+```
 
+### Crear etiqueta (requiere token)
 
-Crear una etiqueta (requiere autenticación):
-
+```bash
 curl -X POST "http://localhost:8000/api/v1/tags/" \
-  -H "Authorization: Bearer TU_TOKEN_AQUI" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Urgente",
-    "color": "#FF0000"
-  }'
+-H "Authorization: Bearer TU_TOKEN_AQUI" \
+-H "Content-Type: application/json" \
+-d '{ "name": "Urgente", "color": "#FF0000" }'
+```
 
-🧪 Testing
+---
 
-Ejecutar tests (cuando estén implementados):
+## 🧪 Testing
 
+* Ejecutar tests:
+
+```bash
 pytest
+```
 
+* Ejecutar tests con reporte de cobertura:
 
-Con reporte de cobertura:
-
+```bash
 pytest --cov=app --cov-report=html
+```
 
-🔐 Seguridad
+---
 
-Contraseñas con hashing Argon2.
+## 🔐 Seguridad
 
-Tokens JWT con expiración configurable (por defecto 30 minutos).
+* Hashing de contraseñas con **Argon2**.
+* Tokens JWT con expiración configurable (por defecto 30 minutos).
+* **IMPORTANTE:** Cambiar `SECRET_KEY` en producción para mayor seguridad.
 
-IMPORTANTE: Cambiar SECRET_KEY en producción para mayor seguridad.
+---
 
-🗄️ Migraciones de Base de Datos
+## 🗄️ Migraciones de base de datos
 
-Crear nueva migración:
+* Crear migración:
 
+```bash
 alembic revision --autogenerate -m "Descripción del cambio"
+```
 
+* Aplicar migraciones:
 
-Aplicar migraciones:
-
+```bash
 alembic upgrade head
+```
 
+* Revertir última migración:
 
-Revertir última migración:
-
+```bash
 alembic downgrade -1
+```
 
+* Ver historial de migraciones:
 
-Ver historial de migraciones:
-
+```bash
 alembic history
+```
 
-🐳 Comandos Docker útiles
+---
 
-Levantar servicios:
+## 🐳 Comandos Docker útiles
 
+```bash
+# Levantar servicios
 docker-compose up -d
 
-
-Ver logs del API:
-
+# Ver logs de la API
 docker-compose logs -f api
 
-
-Detener servicios:
-
+# Detener servicios
 docker-compose down
 
-
-Reconstruir imagen:
-
+# Reconstruir imagen
 docker-compose build
 
-
-Acceder al contenedor API:
-
+# Acceder al contenedor API
 docker-compose exec api bash
 
-
-Acceder a PostgreSQL:
-
+# Acceder a PostgreSQL
 docker-compose exec db psql -U taskflow_user -d taskflow_db
+```
 
-🏗️ Arquitectura
+---
 
-El proyecto está organizado en capas:
+## 🏗️ Arquitectura
 
-API Layer (app/api/): Endpoints y validación
+* **API Layer:** Endpoints y validación (`app/api/`)
+* **Service Layer:** Lógica de negocio (`app/services/`)
+* **Repository Layer:** Acceso a datos (`app/repositories/`)
+* **Model Layer:** Modelos ORM (`app/models/`)
+* **Schema Layer:** Validación con Pydantic (`app/schemas/`)
 
-Service Layer (app/services/): Lógica de negocio
+---
 
-Repository Layer (app/repositories/): Acceso a datos
+## 🤝 Contribuir
 
-Model Layer (app/models/): Modelos ORM
+1. Haz fork del proyecto.
+2. Crea una rama para tu feature: `git checkout -b feature/nombre`.
+3. Realiza commits claros y descriptivos.
+4. Envía un pull request para revisión.
 
-Schema Layer (app/schemas/): Validación con Pydantic
+---
 
-🤝 Contribuir
+## 📄 Licencia
 
-Haz fork del proyecto.
+Este proyecto está bajo licencia **MIT**.
 
-Crea una rama para tu feature (git checkout -b feature/nombre).
+---
 
-Realiza commits claros y descriptivos.
-
-Envía un pull request para revisión.
-
-📄 Licencia
-
-Este proyecto está bajo licencia MIT.
-
-👨‍💻 Autor
+## 👨‍💻 Autor
 
 Dalmiro Rivadera
 Desarrollado como proyecto base para aplicaciones FastAPI con SQLAlchemy async.
 
-¡Gracias por usar TaskFlow! 🚀
+---
+
+¡Gracias por usar **TaskFlow**! 🚀
