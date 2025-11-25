@@ -54,8 +54,11 @@ Crear y activar un entorno virtual:
 bash
 Copiar código
 python -m venv venv
-# Windows
-venv\Scripts\activate
+
+- Windows:
+  ```powershell
+  venv\Scripts\activate
+
 # Linux/macOS
 source venv/bin/activate
 Instalar dependencias:
