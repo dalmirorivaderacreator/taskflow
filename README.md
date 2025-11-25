@@ -14,9 +14,9 @@ TaskFlow es una API REST para la gestión eficiente de tareas, con soporte para 
 
 ## 📦 Requisitos Previos
 
-- Docker y Docker Compose (recomendado)  
-  **o**  
-- Python 3.11+ y PostgreSQL 15+ instalados localmente
+- Docker y Docker Compose (recomendado),  
+  o bien  
+- Python 3.11+ y PostgreSQL 15+ instalados localmente.
 
 ## ⚙️ Instalación y Configuración
 
@@ -50,12 +50,12 @@ Crear y activar un entorno virtual:
 bash
 Copiar código
 python -m venv venv
-Windows:
+En Windows (PowerShell):
 
 powershell
 Copiar código
 venv\Scripts\activate
-Linux/macOS:
+En Linux/macOS (bash):
 
 bash
 Copiar código
@@ -176,7 +176,7 @@ Revertir última migración:
 bash
 Copiar código
 alembic downgrade -1
-Ver historial:
+Ver historial de migraciones:
 
 bash
 Copiar código
@@ -225,6 +225,12 @@ Envía un pull request para revisión
 
 📄 Licencia
 Este proyecto está bajo licencia MIT.
+
+👨‍💻 Autor
+Dalmiro Rivadera
+Desarrollado como proyecto base para aplicaciones FastAPI con SQLAlchemy async.
+
+¡Gracias por usar TaskFlow! 🚀
 
 👨‍💻 Autor
 Dalmiro Rivadera
