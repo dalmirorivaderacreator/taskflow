@@ -24,7 +24,7 @@ TaskFlow es una API REST para la gestión eficiente de tareas, con soporte para 
 
 Clonar el repositorio y entrar al directorio:
 
-```bash
+bash
 git clone https://github.com/tu_usuario/taskflow.git
 cd taskflow
 Levantar servicios con Docker Compose:
