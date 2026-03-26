@@ -17,6 +17,16 @@
 
 ---
 
+## 📌 Sobre este proyecto
+
+TaskFlow lo desarrollé siguiendo un tutorial con asistencia de IA. Fue útil para conocer FastAPI, JWT y SQLAlchemy async, pero fue un ejercicio de copiar y pegar, no de aprendizaje profundo.
+
+Hoy mi enfoque es diferente. Estoy construyendo **[PEF Analytics System](https://github.com/dalmirorivaderacreator/PEF)** desde cero, aprendiendo de verdad.
+
+👉 Mirá PEF para ver mi trabajo actual.
+
+---
+
 ## 📦 Requisitos previos
 
 * **Opción recomendada:** Docker y Docker Compose instalados.
